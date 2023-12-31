@@ -12,7 +12,7 @@ pub struct Bird {
 
 impl Bird {
     const BIRD_SCALE: Vec3 = Vec3::new(0.25, 0.25, 0.25);
-    const BIRD_SPAWN: Vec3 = Vec3::new(0.0, 0.0, 0.0);
+    const BIRD_SPAWN: Vec3 = Vec3::new(-535.0, 0.0, 0.0);
     const START_TRANSFORM: Transform =
         Transform::from_translation(Self::BIRD_SPAWN).with_scale(Self::BIRD_SCALE);
 

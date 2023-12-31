@@ -12,7 +12,8 @@ mod world_config {
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        .add_systems(Startup, (setup, Bird::setup))
+        .add_systems(Startup, setup)
+        .add_systems(Startup, Bird::setup.after(setup))
         .add_systems(FixedUpdate, Bird::physics)
         .run();
 }
