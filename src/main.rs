@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 
 mod bird;
+mod input;
 
 use bird::Bird;
 

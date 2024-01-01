@@ -1,6 +1,9 @@
 use bevy::prelude::*;
 
-use crate::world_config;
+use crate::{
+    input::{Action, InputHandler},
+    world_config,
+};
 
 #[derive(Component)]
 pub struct Bird {
@@ -40,7 +43,9 @@ impl Bird {
     ) {
         let (mut transform, mut bird) = bird.single_mut();
 
-        if mouse_buttons.just_pressed(MouseButton::Left) || keyboard.just_pressed(KeyCode::Space) {
+        let handler = InputHandler::new(Some(&mouse_buttons), Some(&keyboard), None);
+
+        if handler.handle_action(Action::JUMP) {
             // If the bird was previously going down, set its velocity to 0
             // This gives greater control over the birds movement
             if bird.velocity < 0.0 {
