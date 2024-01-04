@@ -64,3 +64,10 @@ impl Bird {
         transform.translation.y += bird.velocity * time.delta_seconds();
     }
 }
+
+impl super::SystemsController for Bird {
+    fn include_systems(app: &mut App) -> &mut App {
+        app.add_systems(Startup, Bird::setup.after(super::setup))
+            .add_systems(FixedUpdate, Bird::physics)
+    }
+}

@@ -2,6 +2,9 @@ use bevy::prelude::*;
 
 mod bird;
 mod input;
+mod systems;
+
+pub(crate) use systems::*;
 
 use bird::Bird;
 
@@ -11,12 +14,13 @@ mod world_config {
 }
 
 fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
-        .add_systems(Startup, setup)
-        .add_systems(Startup, Bird::setup.after(setup))
-        .add_systems(FixedUpdate, Bird::physics)
-        .run();
+    let mut app = App::new();
+
+    app.add_plugins(DefaultPlugins).add_systems(Startup, setup);
+
+    app.include_systems::<Bird>();
+
+    app.run();
 }
 
 fn setup(mut commands: Commands) {
