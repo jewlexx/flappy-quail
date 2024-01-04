@@ -1,4 +1,4 @@
-use bevy::{ecs::query::WorldQuery, prelude::*};
+use bevy::prelude::*;
 
 use crate::physics::{Collider, Velocity};
 

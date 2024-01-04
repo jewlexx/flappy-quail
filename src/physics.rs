@@ -1,13 +1,9 @@
 use bevy::{prelude::*, sprite::collide_aabb::collide};
 
-use crate::{bird::Bird, pipes::PipePart};
+use crate::{bird::Bird, pipes::PipePart, scoring::Scoreboard};
 
-#[derive(Component, PartialEq, Eq)]
-pub enum Collider {
-    Pipe,
-    Middle,
-    Bird,
-}
+#[derive(Component)]
+pub struct Collider;
 
 #[derive(Default, Component, Deref, DerefMut, PartialEq)]
 pub struct Velocity(Vec2);
@@ -17,12 +13,12 @@ pub struct CollisionEvent;
 
 pub fn check_for_collisions(
     mut commands: Commands,
-    // mut scoreboard: ResMut<Scoreboard>,
-    mut bird_query: Query<(&mut Velocity, &Transform), With<Bird>>,
+    mut scoreboard: ResMut<Scoreboard>,
+    mut bird_query: Query<(Entity, &mut Velocity, &Transform), With<Bird>>,
     collider_query: Query<(&Transform, &PipePart), With<Collider>>,
     mut collision_events: EventWriter<CollisionEvent>,
 ) {
-    let (mut _bird_velocity, bird_transform) = bird_query.single_mut();
+    let (entity, mut _bird_velocity, bird_transform) = bird_query.single_mut();
     let ball_size = bird_transform.scale.truncate();
 
     // check collision with walls
@@ -38,8 +34,8 @@ pub fn check_for_collisions(
             collision_events.send_default();
 
             match pipe_part.section() {
-                crate::pipes::PipeSection::Middle => todo!("Increase score"),
-                _ => todo!("Kill bird"),
+                crate::pipes::PipeSection::Middle => scoreboard.score += 1,
+                _ => Bird::kill_bird(&mut commands, entity),
             }
 
             // Bricks should be despawned and increment the scoreboard on collision

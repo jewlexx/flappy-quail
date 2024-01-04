@@ -58,6 +58,10 @@ impl Bird {
 
         transform.translation.y += velocity.y * time.delta_seconds();
     }
+
+    pub fn kill_bird(commands: &mut Commands, entity: Entity) {
+        unimplemented!("Kill bird...");
+    }
 }
 
 impl super::SystemsController for Bird {
