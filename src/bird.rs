@@ -2,12 +2,13 @@ use bevy::prelude::*;
 
 use crate::{
     input::{Action, InputHandler},
+    physics::Velocity,
     world_config,
 };
 
 #[derive(Component)]
 pub struct Bird {
-    velocity: f32,
+    velocity: Velocity,
     jump_power: f32,
     gravity: f32,
     speed_limit: f32,
@@ -48,20 +49,20 @@ impl Bird {
         if handler.handle_action(Action::JUMP) {
             // If the bird was previously going down, set its velocity to 0
             // This gives greater control over the birds movement
-            if bird.velocity < 0.0 {
-                bird.velocity = 0.0;
+            if bird.velocity.y < 0.0 {
+                bird.velocity.y = 0.0;
             }
 
-            bird.velocity += bird.jump_power;
+            bird.velocity.y += bird.jump_power;
             // If bird travels too fast, just maintain the speed limit
-            if bird.velocity >= bird.speed_limit {
-                bird.velocity = bird.speed_limit;
+            if bird.velocity.y >= bird.speed_limit {
+                bird.velocity.y = bird.speed_limit;
             }
         } else {
-            bird.velocity += bird.gravity;
+            bird.velocity.y += bird.gravity;
         }
 
-        transform.translation.y += bird.velocity * time.delta_seconds();
+        transform.translation.y += bird.velocity.y * time.delta_seconds();
     }
 }
 

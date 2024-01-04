@@ -2,6 +2,8 @@ use bevy::prelude::*;
 
 mod bird;
 mod input;
+mod physics;
+mod pipes;
 mod systems;
 
 pub(crate) use systems::*;
@@ -16,7 +18,10 @@ mod world_config {
 fn main() {
     let mut app = App::new();
 
-    app.add_plugins(DefaultPlugins).add_systems(Startup, setup);
+    app.add_plugins(DefaultPlugins);
+
+    app.add_systems(Startup, setup);
+    app.add_systems(FixedUpdate, physics::check_for_collisions);
 
     app.include_systems::<Bird>();
 
